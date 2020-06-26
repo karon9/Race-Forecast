@@ -20,9 +20,7 @@ RACR_URL_DIR = "race_url"
 RACR_HTML_DIR = "race_html"
 CSV_DIR = "csv"
 
-import logging
 
-logger = logging.getLogger(__name__)  # ファイルの名前を渡す
 
 race_data_columns = [
     'race_id',
@@ -99,10 +97,11 @@ def make_csv_from_html():
 def make_csv_from_html_by_year(year):
     save_race_csv = CSV_DIR + "/race-" + str(year) + ".csv"
     horse_race_csv = CSV_DIR + "/horse-" + str(year) + ".csv"
-    if ((os.path.isfile(save_race_csv)) and (os.path.isfile(horse_race_csv))):  # まだcsvがなければ生成
+    if not os.path.exists(CSV_DIR):
+        os.mkdir(CSV_DIR)
+    if not ((os.path.isfile(save_race_csv)) and (os.path.isfile(horse_race_csv))):  # まだcsvがなければ生成
         race_df = pd.DataFrame(columns=race_data_columns)
         horse_df = pd.DataFrame(columns=horse_data_columns)
-        logger.info("saving csv (" + str(year) + ")")
         total = 0
         for month in range(1, 13):
             # race_html/year/month というディレクトリが存在すればappend, なければ何もしない
@@ -110,8 +109,6 @@ def make_csv_from_html_by_year(year):
             if os.path.isdir(html_dir):
                 file_list = os.listdir(html_dir)  # get all file names
                 total += len(file_list)
-                logger.info(
-                    " appending " + str(len(file_list)) + " datas to csv (" + str(year) + " " + str(month) + ")")
                 for file_name in file_list:
                     with open(html_dir + "/" + file_name, "r") as f:
                         html = f.read()
@@ -129,11 +126,6 @@ def make_csv_from_html_by_year(year):
 
         race_df.to_csv(save_race_csv, header=True, index=False)
         horse_df.to_csv(horse_race_csv, header=True, index=False)
-        logger.info(' (rows, columns) of race_df:\t' + str(race_df.shape))
-        logger.info(' (rows, columns) of horse_df:\t' + str(horse_df.shape))
-        logger.info("saved " + str(total) + " htmls to csv (" + str(year) + ")")
-    else:
-        logger.info("already have csv (" + str(year) + ")")
 
 
 def get_rade_and_horse_data_by_html(race_id, html):
