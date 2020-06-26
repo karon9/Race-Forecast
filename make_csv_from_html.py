@@ -317,15 +317,10 @@ def get_rade_and_horse_data_by_html(race_id, html):
 
 
 if __name__ == '__main__':
-    formatter = "%(asctime)s [%(levelname)s]\t%(message)s"  # フォーマットを定義
-    # formatter_func = "%(asctime)s\t[%(levelname)8s]\t%(message)s from %(func)" # フォーマットを定義
-    logging.basicConfig(filename='logfile/' + OWN_FILE_NAME + '.logger.log', level=logging.INFO, format=formatter)
 
-    logger.info("start making csv!")
-    # make_csv_from_html()
+    make_csv_from_html()
 
-    # テスト
-    make_csv_from_html_by_year(2008)
+
 
     # with open("race_html/2008/1/200810010312.html", "r") as f:
     #     html = f.read()
