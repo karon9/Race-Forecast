@@ -106,6 +106,7 @@ def make_csv_from_html_by_year(year):
         for month in range(1, 13):
             # race_html/year/month というディレクトリが存在すればappend, なければ何もしない
             html_dir = RACR_HTML_DIR + "/" + str(year) + "/" + str(month)
+            print(f"start writing files of {year}/{month}")
             if os.path.isdir(html_dir):
                 file_list = os.listdir(html_dir)  # get all file names
                 total += len(file_list)
@@ -116,13 +117,13 @@ def make_csv_from_html_by_year(year):
                         race_id = list[-2]
                         try:
                             race_list, horse_list_list = get_rade_and_horse_data_by_html(race_id, html)
+                            for horse_list in horse_list_list:
+                                horse_se = pd.Series(horse_list, index=horse_df.columns)
+                                horse_df = horse_df.append(horse_se, ignore_index=True)
+                            race_se = pd.Series(race_list, index=race_df.columns)
+                            race_df = race_df.append(race_se, ignore_index=True)
                         except NameError as e:
                             continue
-                        for horse_list in horse_list_list:
-                            horse_se = pd.Series(horse_list, index=horse_df.columns)
-                            horse_df = horse_df.append(horse_se, ignore_index=True)
-                        race_se = pd.Series(race_list, index=race_df.columns)
-                        race_df = race_df.append(race_se, ignore_index=True)
 
         race_df.to_csv(save_race_csv, header=True, index=False)
         horse_df.to_csv(horse_race_csv, header=True, index=False)
