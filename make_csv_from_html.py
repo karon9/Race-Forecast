@@ -20,8 +20,6 @@ RACR_URL_DIR = "race_url"
 RACR_HTML_DIR = "race_html"
 CSV_DIR = "csv"
 
-
-
 race_data_columns = [
     'race_id',
     'race_round',
@@ -103,7 +101,7 @@ def make_csv_from_html_by_year(year):
         race_df = pd.DataFrame(columns=race_data_columns)
         horse_df = pd.DataFrame(columns=horse_data_columns)
         total = 0
-        for month in range(1, 13):
+        for month in range(3, 13):
             # race_html/year/month というディレクトリが存在すればappend, なければ何もしない
             html_dir = RACR_HTML_DIR + "/" + str(year) + "/" + str(month)
             print(f"start writing files of {year}/{month}")
@@ -139,7 +137,7 @@ def get_rade_and_horse_data_by_html(race_id, html):
     race_list.append(data_intro.find("dt").get_text().strip("\n"))  # race_round
     race_list.append(data_intro.find("h1").get_text().strip("\n"))  # race_title
     race_details1 = data_intro.find("p").get_text().strip("\n").split("\xa0/\xa0")
-    if race_details1[0].split(" ")[0] == '障芝':
+    if '障芝' in race_details1[0].split(" ")[0]:
         raise NameError("障害レースです")
     race_list.append(race_details1[0])  # race_course
     race_list.append(race_details1[1])  # weather
@@ -310,11 +308,9 @@ def get_rade_and_horse_data_by_html(race_id, html):
 
 
 if __name__ == '__main__':
-
     make_csv_from_html()
 
-
-
-    # with open("race_html/2008/1/200810010312.html", "r") as f:
+    # file_name = '200809010509'
+    # with open(f"race_html/2008/3/{file_name}.html", "r") as f:
     #     html = f.read()
-    #     get_rade_and_horse_data_by_html(200810010312, html)
+    #     get_rade_and_horse_data_by_html(file_name, html)
