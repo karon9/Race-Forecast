@@ -316,7 +316,7 @@ def get_rade_and_horse_data_by_html(race_id, html):
 
 if __name__ == '__main__':
     make_csv_from_html()
-o
+
     # file_name = '201805040406'
     # with open(f"race_html/2018/10/{file_name}.html", "r") as f:
     #     html = f.read()
