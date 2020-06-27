@@ -88,7 +88,7 @@ horse_data_columns = [
 
 
 def make_csv_from_html():
-    for year in range(2018, now_datetime.year + 1):
+    for year in range(2008, now_datetime.year + 1):
         make_csv_from_html_by_year(year)
 
 
@@ -101,7 +101,7 @@ def make_csv_from_html_by_year(year):
         race_df = pd.DataFrame(columns=race_data_columns)
         horse_df = pd.DataFrame(columns=horse_data_columns)
         total = 0
-        for month in range(10, 13):
+        for month in range(1, 13):
             # race_html/year/month というディレクトリが存在すればappend, なければ何もしない
             html_dir = RACR_HTML_DIR + "/" + str(year) + "/" + str(month)
             print(f"start writing files of {year}/{month}")
