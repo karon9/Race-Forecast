@@ -237,17 +237,20 @@ def get_rade_and_horse_data_by_html(race_id, html):
     # analysis-comment
     try:
         analysis = soup.find_all("table", class_="result_table_02")[3]
-        race_list.append(analysis.find_all("td")[0].get_text())
+        race_list.append(analysis.find("td").get_text())
     except IndexError:
         race_list.append(0)
 
     # short-comment
-    short = soup.find_all("table", class_="result_table_02")[4]
-    short_comments = {}
-    for i in range(len(short.find_all("th"))):
-        short_rank = str(short.find_all("th")[i].get_text().split('着:')[0])
-        short_comment = short.find_all("td")[i].get_text()
-        short_comments.setdefault(short_rank, short_comment)
+    try:
+        short = soup.find_all("table", class_="result_table_02")[4]
+        short_comments = {}
+        for i in range(len(short.find_all("th"))):
+            short_rank = str(short.find_all("th")[i].get_text().split('着:')[0])
+            short_comment = short.find_all("td")[i].get_text()
+            short_comments.setdefault(short_rank, short_comment)
+    except IndexError:
+        short_comments = {0: 0}
 
     # horse data
     for rank in range(1, len(result_rows)):
@@ -310,7 +313,7 @@ def get_rade_and_horse_data_by_html(race_id, html):
 if __name__ == '__main__':
     make_csv_from_html()
 
-    # file_name = '200809010509'
-    # with open(f"race_html/2008/3/{file_name}.html", "r") as f:
+    # file_name = '200903010110'
+    # with open(f"race_html/2009/4/{file_name}.html", "r") as f:
     #     html = f.read()
     #     get_rade_and_horse_data_by_html(file_name, html)
