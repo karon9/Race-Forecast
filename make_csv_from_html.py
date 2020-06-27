@@ -88,7 +88,7 @@ horse_data_columns = [
 
 
 def make_csv_from_html():
-    for year in range(2008, now_datetime.year + 1):
+    for year in range(2018, now_datetime.year + 1):
         make_csv_from_html_by_year(year)
 
 
@@ -101,7 +101,7 @@ def make_csv_from_html_by_year(year):
         race_df = pd.DataFrame(columns=race_data_columns)
         horse_df = pd.DataFrame(columns=horse_data_columns)
         total = 0
-        for month in range(1, 13):
+        for month in range(10, 13):
             # race_html/year/month というディレクトリが存在すればappend, なければ何もしない
             html_dir = RACR_HTML_DIR + "/" + str(year) + "/" + str(month)
             print(f"start writing files of {year}/{month}")
@@ -205,8 +205,12 @@ def get_rade_and_horse_data_by_html(race_id, html):
         race_list.append("0")
     # baba-index
     baba = soup.find_all("table", class_="result_table_02")[0]
-    race_list.append(baba.find_all("td")[0].get_text().split("\xa0")[0])  # baba_index
-    race_list.append(baba.find_all("td")[1].get_text())  # baba-comment
+    if len(baba.find_all("td")) == 2:
+        race_list.append(baba.find_all("td")[0].get_text().split("\xa0")[0])  # baba_index
+        race_list.append(baba.find_all("td")[1].get_text())  # baba-comment
+    else:
+        race_list.append(baba.find_all("td")[0].get_text().split("\xa0")[0])
+        race_list.append(0)
 
     # coner-rank
     coner_rank = soup.find_all("table", class_="result_table_02")[1]
@@ -312,8 +316,8 @@ def get_rade_and_horse_data_by_html(race_id, html):
 
 if __name__ == '__main__':
     make_csv_from_html()
-
-    # file_name = '200903010110'
-    # with open(f"race_html/2009/4/{file_name}.html", "r") as f:
+o
+    # file_name = '201805040406'
+    # with open(f"race_html/2018/10/{file_name}.html", "r") as f:
     #     html = f.read()
     #     get_rade_and_horse_data_by_html(file_name, html)
