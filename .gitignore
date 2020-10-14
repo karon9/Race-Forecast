@@ -4,7 +4,7 @@
 /predict/*predicted*.csv
 *.gz
 .ipynb*
-.csv
+*.csv
 race_html
 race_url
 logfile/

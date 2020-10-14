@@ -4,7 +4,7 @@ race_urlディレクトリに含まれるURLを利用して、htmlを取得す�
 import datetime
 import pytz
 
-now_datetime = datetime.datetime.now(pytz.timezone('Asia/Tokyo'))
+# now_datetime = datetime.datetime.now(pytz.timezone('Asia/Tokyo'))
 
 import requests
 from bs4 import BeautifulSoup
@@ -18,6 +18,10 @@ OWN_FILE_NAME = path.splitext(path.basename(__file__))[0]
 RACR_URL_DIR = "race_url"
 RACR_HTML_DIR = "race_html"
 
+#  直近のデータを取得したいならnow_datetime.yearなどを代入
+now_year = 2020
+now_month = 6
+
 import logging
 
 logger = logging.getLogger(__name__)  # ファイルの名前を渡す
@@ -30,12 +34,12 @@ def my_makedirs(path):
 
 def get_race_html(session):
     # 去年までのデータ
-    for year in range(2008, now_datetime.year):
+    for year in range(2008, now_year):
         for month in range(1, 13):
             get_race_html_by_year_and_mon(year, month, session)
     # 今年のデータ
-    for year in range(now_datetime.year, now_datetime.year + 1):
-        for month in range(1, now_datetime.month + 1):
+    for year in range(now_year, now_year + 1):
+        for month in range(1, now_month + 1):
             get_race_html_by_year_and_mon(year, month, session)
 
 
@@ -98,9 +102,5 @@ def login__netkeiba():
 
 
 if __name__ == '__main__':
-    formatter = "%(asctime)s [%(levelname)s]\t%(message)s"  # フォーマットを定義
-    logging.basicConfig(filename='logfile/' + OWN_FILE_NAME + '.logger.log', level=logging.INFO, format=formatter)
-
-    logger.info("start get race html!")
     session = login__netkeiba()
     get_race_html(session)

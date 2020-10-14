@@ -132,8 +132,5 @@ def get_race_url_by_year_and_mon(driver, year, month):
 
 
 if __name__ == '__main__':
-    formatter = "%(asctime)s [%(levelname)s]\t%(message)s"  # フォーマットを定義
-    logging.basicConfig(filename='logfile/' + OWN_FILE_NAME + '.logger.log', level=logging.INFO, format=formatter)
 
-    logger.info("start get race url!")
     get_race_url()
